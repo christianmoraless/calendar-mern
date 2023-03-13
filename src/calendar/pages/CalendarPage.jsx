@@ -3,30 +3,26 @@ import { useState } from "react";
 // Calendar
 import { Calendar } from "react-big-calendar";
 // Components
-import { Navbar, CalendarEvent, CalendarModal } from "../";
+import { Navbar, CalendarEvent, CalendarModal, FabAddNew } from "../";
+// Hooks
+import { useUiStore, useCalendarStore } from "../../hooks";
 // Calendar and dates
 import { getMessagesES, localizer } from "../../helpers";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-const events = [
-  {
-    title: "Cumpleaños de Camila",
-    notes: "Hay que comprar la torta",
-    start: new Date(),
-    end: new Date(),
-  },
-];
-
 export const CalendarPage = () => {
+  const { onOpenModal } = useUiStore();
+  const { events, setActiveElement } = useCalendarStore();
+
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastview") || "week"
   );
   const eventStyleGetter = (event, start, end, isSelected) => {};
   const onDoubleClick = (event) => {
-    console.log({ dobleClick: event });
+    onOpenModal();
   };
   const onSelectEvent = (event) => {
-    console.log({ click: event });
+    setActiveElement(event);
   };
   const onViewChange = (event) => {
     localStorage.setItem("lastView", event);
@@ -53,6 +49,7 @@ export const CalendarPage = () => {
         onView={onViewChange}
       />
       <CalendarModal />
+      <FabAddNew />
     </>
   );
 };
