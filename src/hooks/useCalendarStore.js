@@ -20,14 +20,15 @@ export const useCalendarStore = () => {
       dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime() }));
     }
   };
-  const deleteEvent = () => {
+  const startDeleteEvent = () => {
     dispatch(onDeleteEvent());
   };
   return {
     events,
     activeEvent,
+    hasEventSelected: !!activeEvent,
     setActiveElement,
     startSavingEvent,
-    deleteEvent,
+    startDeleteEvent,
   };
 };
