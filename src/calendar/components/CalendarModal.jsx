@@ -24,7 +24,7 @@ const customStyles = {
 };
 export const CalendarModal = () => {
   const { onCloseModal } = useUiStore();
-  const { activeEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
   const { isDateModalOpen } = useSelector((state) => state.ui);
   const [formSubmited, setFormSubmited] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -57,7 +57,7 @@ export const CalendarModal = () => {
     onCloseModal();
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     setFormSubmited(true);
     const difference = differenceInSeconds(formValues.end, formValues.start);
@@ -69,6 +69,9 @@ export const CalendarModal = () => {
       );
     }
     if (formValues.title.length < 0) return;
+    await startSavingEvent(formValues);
+    onCloseModal();
+    setFormSubmited(false);
   };
 
   useEffect(() => {
@@ -86,8 +89,7 @@ export const CalendarModal = () => {
       style={customStyles}
       className="modal"
       overlayClassName="modal-fondo"
-      closeTimeoutMS={200}
-    >
+      closeTimeoutMS={200}>
       <h1> Nuevo evento </h1>
       <hr />
       <form className="container" onSubmit={onSubmit}>
@@ -143,8 +145,7 @@ export const CalendarModal = () => {
             rows="5"
             name="notes"
             value={formValues.notes}
-            onChange={onInputChanged}
-          ></textarea>
+            onChange={onInputChanged}></textarea>
           <small id="emailHelp" className="form-text text-muted">
             Información adicional
           </small>
