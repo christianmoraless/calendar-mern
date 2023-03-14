@@ -3,7 +3,13 @@ import { useState } from "react";
 // Calendar
 import { Calendar } from "react-big-calendar";
 // Components
-import { Navbar, CalendarEvent, CalendarModal, FabAddNew } from "../";
+import {
+  Navbar,
+  CalendarEvent,
+  CalendarModal,
+  FabAddNew,
+  FabDelete,
+} from "../";
 // Hooks
 import { useUiStore, useCalendarStore } from "../../hooks";
 // Calendar and dates
@@ -50,6 +56,7 @@ export const CalendarPage = () => {
       />
       <CalendarModal />
       <FabAddNew />
+      <FabDelete />
     </>
   );
 };
