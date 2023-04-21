@@ -15,7 +15,7 @@ const registerFormField = {
 };
 
 export const LoginPage = () => {
-  const { startLogin, error } = useAuthStore();
+  const { startLogin, startRegister, error } = useAuthStore();
   const {
     registerName,
     registerEmail,
@@ -37,11 +37,14 @@ export const LoginPage = () => {
 
   const registerSubmit = (event) => {
     event.preventDefault();
-    console.log({
-      registerName,
-      registerEmail,
-      registerPassword,
-      registerPassword2,
+    if (registerPassword !== registerPassword2) {
+      Swal.fire("Error al registrar", "Contrasenas no coinciden", "error");
+      return;
+    }
+    startRegister({
+      name: registerName,
+      email: registerEmail,
+      password: registerPassword,
     });
   };
 
