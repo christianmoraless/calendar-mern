@@ -14,7 +14,8 @@ export const useAuthStore = () => {
       localStorage.setItem("token-init-date", new Date().getTime());
       dispatch(onLogin({ uid: data.uid, name: data.name }));
     } catch (error) {
-      dispatch(onLogout("Credenciales Incorrectas"));
+      console.log(error);
+      dispatch(onLogout(error.response.data?.msg));
       setTimeout(() => {
         dispatch(clearErrorMessage());
       }, 10);
