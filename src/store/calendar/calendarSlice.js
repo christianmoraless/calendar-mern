@@ -1,15 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-const tempEvents = {
-  title: "Cumpleaños de Camila",
-  notes: "Hay que comprar la torta",
-  start: new Date(),
-  end: new Date(),
-};
+
 export const calendarSlice = createSlice({
-  _id: new Date().getTime(),
   name: "calendar",
   initialState: {
-    events: [tempEvents],
+    isLoadingEvents: true,
+    events: [],
     activeEvent: null,
   },
   reducers: {
@@ -36,8 +31,23 @@ export const calendarSlice = createSlice({
         state.activeEvent = null;
       }
     },
+    onLoadEvents: (state, { payload = [] }) => {
+      state.isLoadingEvents = false;
+      state.events = payload;
+      // payload.forEach((event) => {
+      //   const exists = state.events.some((dbEvent) => dbEvent.id === event.id);
+      //   if (!exists) {
+      //     state.events.push(event);
+      //   }
+      // });
+    },
   },
 });
 
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } =
-  calendarSlice.actions;
+export const {
+  onAddNewEvent,
+  onDeleteEvent,
+  onLoadEvents,
+  onSetActiveEvent,
+  onUpdateEvent,
+} = calendarSlice.actions;
