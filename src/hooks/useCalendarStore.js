@@ -32,12 +32,20 @@ export const useCalendarStore = () => {
 
   const startSavingEvent = async (calendarEvent) => {
     if (calendarEvent._id) {
-      dispatch(onUpdateEvent({ ...calendarEvent }));
+      //actualizando
+      try {
+        await calendarApi.put(`events/${calendarEvent._id}`, calendarEvent);
+        dispatch(onUpdateEvent({ ...calendarEvent, user }));
+        return;
+      } catch (error) {
+        Swal.fire("Ha ocurrido un error", `${error.message}`, "error");
+      }
     } else {
+      //creando
       try {
         const { data } = await calendarApi.post("events", calendarEvent);
         dispatch(
-          onAddNewEvent({ ...calendarEvent, _id: data.event.user._id, user })
+          onAddNewEvent({ ...calendarEvent, id: data.event.user.id, user })
         );
       } catch (error) {
         Swal.fire("Ha ocurrido un error", `${error.message}`, "error");
@@ -45,8 +53,13 @@ export const useCalendarStore = () => {
     }
   };
 
-  const startDeleteEvent = () => {
-    dispatch(onDeleteEvent());
+  const startDeleteEvent = async () => {
+    try {
+      await calendarApi.delete(`events/${activeEvent._id}`);
+      dispatch(onDeleteEvent());
+    } catch (error) {
+      Swal.fire("Ha ocurrido un error", `${error.message}`, "error");
+    }
   };
 
   return {

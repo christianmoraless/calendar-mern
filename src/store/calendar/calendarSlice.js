@@ -34,12 +34,11 @@ export const calendarSlice = createSlice({
     onLoadEvents: (state, { payload = [] }) => {
       state.isLoadingEvents = false;
       state.events = payload;
-      // payload.forEach((event) => {
-      //   const exists = state.events.some((dbEvent) => dbEvent.id === event.id);
-      //   if (!exists) {
-      //     state.events.push(event);
-      //   }
-      // });
+    },
+    onLogoutCalendar: (state) => {
+      state.isLoadingEvents = false;
+      state.events = [];
+      state.activeEvent = null;
     },
   },
 });
@@ -50,4 +49,5 @@ export const {
   onLoadEvents,
   onSetActiveEvent,
   onUpdateEvent,
+  onLogoutCalendar,
 } = calendarSlice.actions;
